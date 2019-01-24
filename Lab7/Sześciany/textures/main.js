@@ -29,7 +29,11 @@ function runWebGL () {
    gl_ctx = gl_getContext(gl_canvas);
    gl_initShaders();
    gl_initBuffers();
-   gl_setMatrix();
+    if(!game_is_running)
+        {
+              gl_setMatrix();
+        }
+ 
    _cubeTexture = gl_initTexture();
    gl_draw();
 }
@@ -324,7 +328,7 @@ function gl_draw() {
       window.requestAnimationFrame(animate);
    };
     if(!game_is_running){
-        animate();
+        animate(0);
         game_is_running = true;
     }
 

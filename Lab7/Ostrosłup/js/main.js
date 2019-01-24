@@ -14,7 +14,7 @@ var _ViewMatrix;
 var _matrixProjection;
 var _matrixMovement;
 var _matrixView;
-
+var game_is_running=false;
 var rotationSpeed = 0.001;
 var zoomRatio = -6;
 
@@ -27,7 +27,11 @@ function runWebGL () {
 	gl_ctx = gl_getContext(gl_canvas);
 	gl_initShaders();
 	gl_initBuffers();
-	gl_setMatrix();
+     if(!game_is_running)
+        {
+              gl_setMatrix();
+        }
+	
 	gl_draw();
 }
 
@@ -106,14 +110,14 @@ function gl_initShaders () {
 // bufory
 function gl_initBuffers () {
 	var triangleVertices = [
-		-1, -1, -1,
-		0, 0, 0,
-		1, -1, -1,
-		1, 0, 0,
-		1, -1, 1,
-		1, 1, 0,
-		1,1,1,
-		1,0,0,
+		-1, -1, -1,       //Pierwsza współrzędna ostrosłupa
+		1, 1, 1,          //Kolor ostrosłupa
+		1, -1, -1,        //Druga współrzędna ostrosłupa
+		0, 1, 1,          //Kolor ostrosłupa
+		1, -1, 1,         //Trzecia współrzędna ostrosłupa
+		1, 1, 1,          //Kolor ostrosłupa
+		1,1,1,            //Czwarta współrzędna ostrosłupa
+		1,0,0,            //Kolor ostrosłupa
 	];
 
 	_triangleVertexBuffer = gl_ctx.createBuffer();
@@ -122,8 +126,8 @@ function gl_initBuffers () {
 		new Float32Array(triangleVertices),
 		gl_ctx.STATIC_DRAW);
 
-	var triangleFaces = [
-		0, 1, 2,
+	var triangleFaces = [ //indeksy współrzędnych 
+		0, 1, 2,          //z funkcji poprzedniej
 		0, 1, 3,
 		0, 2, 3,
 		1, 2, 3,
@@ -182,5 +186,9 @@ function gl_draw() {
 		gl_ctx.flush();
 		window.requestAnimationFrame(animate);
 	};
-	animate(0);
+     if(!game_is_running){
+        animate(0);
+        game_is_running = true;
+    }
+	
 }
